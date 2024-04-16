@@ -14,21 +14,19 @@
 </head>
 <body>
 <div class="logoutblock">
-<!--    <button onclick="window.location.href = '/login'">Login</button>-->
+    <!--    <button onclick="window.location.href = '/login'">Login</button>-->
     <form th:action="@{/login}" th:method="POST">
         <input type="submit" value="Login"/>
     </form>
 
-<!--    <button onclick="window.location.href = '/logout'">Logout</button>-->
+    <!--    <button onclick="window.location.href = '/logout'">Logout</button>-->
     <form th:action="@{/logout}" th:method="POST">
         <input type="submit" value="Logout"/>
     </form>
 </div>
 
-<h1>Welcome to Index PAGE!</h1>
-
-<a href="/admin">Go to Admin page (view all users)</a><br/>
-<a href="/user">Go to User page (view user profile)</a>
+<h1>You do not have access rights to use the site!</h1>
+<h3>Please contact administrator.</h3>
 
 </body>
 </html>

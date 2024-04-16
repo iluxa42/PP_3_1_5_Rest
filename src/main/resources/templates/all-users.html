@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <style>
+        table th, table td {
+            padding: 5px;
+            border: 1px solid black;
+        }
+        .even_css_class {
+            background-color:aliceblue;
+        }
+        .odd_css_class {
+            background-color:lightcyan;
+        }
+        .logoutblock {
+            text-align: right;
+            width: 550px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="logoutblock">
+    <!--    <button onclick="window.location.href = '/logout'">Logout</button>-->
+
+    <form th:action="@{/logout}" th:method="POST">
+        <input type="submit" value="Logout"/>
+    </form>
+</div>
+
+<h2>Users:</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Age</th>
+            <th>Salary</th>
+            <th>E-mail</th>
+            <th>Username</th>
+            <th>Roles</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user, itr : ${allUsers}" th:class="${itr.even} ? 'even_css_class' : 'odd_css_class'">
+            <td th:text="${user.getName()}"/>
+            <td th:text="${user.getSurname()}"/>
+            <td th:text="${user.getAge()}"/>
+            <td th:text="${user.getSalary()}"/>
+            <td th:text="${user.getEmail()}"/>
+            <td th:text="${user.getUsername()}"/>
+            <td th:text="${user.getRolesNames()}"/>
+            <td>
+                <input type="button" value="Update"
+                       th:onclick="|window.location.href = '@{/admin/updateUser(id=${user.getId()})}'|"/>
+                <input type="button" value="Delete"
+                       th:onclick="|if(window.confirm('Do you really want delete user?'))
+                       window.location.href = '@{/admin/deleteUser(id=${user.getId()})}';|"/>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br/><br/>
+
+<input type="button" value="Add user"
+       onclick="window.location.href = '/admin/addNewUser'"/>
+
+</body>
+</html>
