@@ -1,7 +1,7 @@
 package ru.kata.spring.boot_security.repositories;
 
-import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.entities.User;
+import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository

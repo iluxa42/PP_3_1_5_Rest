@@ -22,9 +22,10 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
         Set<String> roles = AuthorityUtils
                 .authorityListToSet(authentication.getAuthorities());
 
-        String redirect = roles.contains("ROLE_ADMIN") ? "/admin"
-                        : roles.contains("ROLE_USER") ? "/user"
-                        : "/access-denied";
+        String redirect = roles.contains("ROLE_ADMIN")
+                        || roles.contains("ROLE_USER")
+                            ? "/"
+                            : "/login";
 
         httpServletResponse.sendRedirect(redirect);
     }

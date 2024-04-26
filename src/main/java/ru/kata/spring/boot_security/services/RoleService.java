@@ -1,10 +1,10 @@
 package ru.kata.spring.boot_security.services;
 
+import ru.kata.spring.boot_security.entities.Role;
+import ru.kata.spring.boot_security.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.entities.Role;
-import ru.kata.spring.boot_security.repositories.RoleRepository;
 
 import java.util.List;
 

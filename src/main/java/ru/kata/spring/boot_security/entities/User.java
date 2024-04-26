@@ -43,7 +43,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -59,9 +59,11 @@ public class User implements UserDetails {
     }
 
     public String getRolesNames() {
-        return roles.stream()
-                .map(role -> role.getName().substring(5))
-                .collect(Collectors.joining(", "));
+        return (roles == null)
+                ? ""
+                : roles.stream()
+                       .map(role -> role.getName().substring(5))
+                       .collect(Collectors.joining(", "));
     }
 
     @Override
