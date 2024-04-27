@@ -149,7 +149,7 @@
                                                     class="btn btn-info btn-sm"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modal"
-                                                    th:onclick="|modalEditUser(${user.getId()})|"
+                                                    th:onclick="|modalEditUser(${user.getId()}, false)|"
                                             >
                                                 Edit
                                             </button>
@@ -159,7 +159,7 @@
                                                     class="btn btn-danger btn-sm"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modal"
-                                                    th:onclick="|modalDeleteUser(${user.getId()})|"
+                                                    th:onclick="|modalEditUser(${user.getId()}, true)|"
                                             >
                                                 Delete
                                             </button>
@@ -385,10 +385,10 @@
         crossorigin="anonymous"></script>
 
 <script th:inline="javascript">
-    window.addEventListener("load", userPageActive, true);
+    window.addEventListener("load", userPageActivate, true);
 
-    // активировать User Page, если вход User`a
-    function userPageActive() {
+    // активировать User button и panel, если вход User`a
+    function userPageActivate() {
         if (document.getElementById('admin-tab-btn') == null) {
             document.getElementById('user-tab-btn').classList.add('active');
             document.getElementById('user-panel').classList.add('active');
@@ -396,70 +396,48 @@
         }
     }
 
-    function modalEditUser(id) {
+    function modalEditUser(id, isDelete) {
         let user = [[${allUsers}]].find(u => u.id === id);
         if (user == null) return;
 
-        document.getElementById('modal-title').innerText = 'Edit user';
-        let modalActionBtn = document.getElementById('modal-action-btn');
-        modalActionBtn.innerText = 'Edit';
-        modalActionBtn.classList.replace('btn-danger', 'btn-primary');
+        document.getElementById('modal-title').innerText = (isDelete) ? 'Delete user' : 'Edit user';
+        document.getElementById('modal-action-btn').innerText = (isDelete) ? 'Delete' : 'Edit';
+        document.getElementById('modal-action-btn').classList.replace(
+                                                            (isDelete) ? 'btn-primary' : 'btn-danger',
+                                                            (isDelete) ? 'btn-danger' : 'btn-primary');
 
-        let modalForm = document.getElementById('modal-form');
-        modalForm.action = "/saveUser";
-        modalForm.method  = "POST";
-
-        document.getElementById('id').value = user.id;
-        turnEnableInput(document.getElementById('name')).value = user.name;
-        turnEnableInput(document.getElementById('surname')).value = user.surname;
-        turnEnableInput(document.getElementById('age')).value = user.age;
-        turnEnableInput(document.getElementById('salary')).value = user.salary;
-        turnEnableInput(document.getElementById('email')).value = user.email;
-        turnEnableInput(document.getElementById('username')).value = user.username;
-        turnEnableInput(document.getElementById('password')).value = user.password;
-
-        let options = turnEnableInput(document.getElementById('newRoles')).options;
-        options[0].selected = user.roles.find(r => r.name === "ROLE_ADMIN");
-        options[1].selected = user.roles.find(r => r.name === "ROLE_USER");
-    }
-
-    function modalDeleteUser(id) {
-        let user = [[${allUsers}]].find(u => u.id === id);
-        if (user == null) return;
-
-        document.getElementById('modal-title').innerText = 'Delete user';
-        let modalActionBtn = document.getElementById('modal-action-btn');
-        modalActionBtn.innerText = 'Delete';
-        modalActionBtn.classList.replace('btn-primary', 'btn-danger');
-
-        let modalForm = document.getElementById('modal-form');
-        modalForm.action = '/deleteUser?id=' + id;
-        modalForm.method  = 'GET';
+        document.getElementById('modal-form').action = (isDelete) ? '/deleteUser?id=' + id : "/saveUser";
+        document.getElementById('modal-form').method = (isDelete) ? 'GET' : 'POST';
 
         document.getElementById('id').value = user.id;
-        turnDisableInput(document.getElementById('name')).value = user.name;
-        turnDisableInput(document.getElementById('surname')).value = user.surname;
-        turnDisableInput(document.getElementById('age')).value = user.age;
-        turnDisableInput(document.getElementById('salary')).value = user.salary;
-        turnDisableInput(document.getElementById('email')).value = user.email;
-        turnDisableInput(document.getElementById('username')).value = user.username;
-        turnDisableInput(document.getElementById('password')).value = user.password;
 
-        let options = turnDisableInput(document.getElementById('newRoles')).options;
-        options[0].selected = user.roles.find(r => r.name === "ROLE_ADMIN");
-        options[1].selected = user.roles.find(r => r.name === "ROLE_USER");
+        setValuesAndTurnReadonly([
+            ['name', user.name],
+            ['surname', user.surname],
+            ['age', user.age],
+            ['salary', user.salary],
+            ['email', user.email],
+            ['username', user.username],
+            ['password', user.password]
+        ], isDelete);
+
+        let newRolesSel = document.getElementById('newRoles');
+        newRolesSel.options[0].selected = user.roles.find(r => r.name === "ROLE_ADMIN");
+        newRolesSel.options[1].selected = user.roles.find(r => r.name === "ROLE_USER");
+        newRolesSel.disabled = isDelete;
     }
 
-    function turnEnableInput(el) {
-        el.classList.remove('bg-light');
-        el.readOnly = false;
-        return el;
-    }
-
-    function turnDisableInput(el) {
-        el.classList.add('bg-light');
-        el.readOnly = true;
-        return el;
+    function setValuesAndTurnReadonly(idValuesArr, isReadonly) {
+        for (const pair of idValuesArr) {
+            let el = document.getElementById(pair[0]);
+            el.value = pair[1];
+            el.readOnly = isReadonly;
+            if (isReadonly) {
+                el.classList.add('bg-light');
+            } else {
+                el.classList.remove('bg-light');
+            }
+        }
     }
 </script>
 
