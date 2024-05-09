@@ -22,8 +22,8 @@ public class RoleService {
         roleRepository.save(role);
     }
 
-    @Transactional
-    public List<Role> findAll() {
+    @Transactional(readOnly = true)
+    public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 }

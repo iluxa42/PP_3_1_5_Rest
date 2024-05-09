@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Table(name = "user")
 public class User implements UserDetails {
 
     @Id
@@ -43,7 +43,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -56,14 +56,6 @@ public class User implements UserDetails {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .toList();
-    }
-
-    public String getRolesNames() {
-        return (roles == null)
-                ? ""
-                : roles.stream()
-                       .map(role -> role.getName().substring(5))
-                       .collect(Collectors.joining(", "));
     }
 
     @Override

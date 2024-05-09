@@ -6,13 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>ru.kata</groupId>
-	<artifactId>spring-boot_security</artifactId>
+	<artifactId>spring-rest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot_security</name>
-	<description>Demo project for Spring Boot Security</description>
+	<name>spring-rest</name>
+	<description>Demo project for Rest controllers</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -65,6 +65,13 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.17.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
