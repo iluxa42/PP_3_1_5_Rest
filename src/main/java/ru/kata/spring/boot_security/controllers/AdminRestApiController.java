@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.entities.Role;
@@ -9,19 +8,19 @@ import ru.kata.spring.boot_security.exception_handling.UserNotFoundException;
 import ru.kata.spring.boot_security.services.RoleService;
 import ru.kata.spring.boot_security.services.UserService;
 
-import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users/")
-public class RestApiController {
+@RequestMapping("/api/admin/users/")
+public class AdminRestApiController {
 
     private final UserService userService;
     private final RoleService roleService;
 
     @Autowired
-    public RestApiController(UserService userService, RoleService roleService) {
+    public AdminRestApiController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -32,7 +31,7 @@ public class RestApiController {
     }
 
     @GetMapping("/roles")
-    public List<Role> getAllRoles() {
+    public Collection<Role> getAllRoles() {
         return roleService.getAllRoles();
     }
 
@@ -61,10 +60,5 @@ public class RestApiController {
                 () -> new UserNotFoundException("There is no user with ID = " + id));
         userService.deleteUser(id);
         return String.format("User with ID = %s was deleted", id);
-    }
-
-    @GetMapping("/currentAuth")
-    public User getCurrentUser(Principal principal) {
-        return userService.findByUsername(principal.getName());
     }
 }

@@ -1,4 +1,4 @@
-const URL = 'http://localhost:8080/api/users/';
+const URL = 'http://localhost:8080/api/admin/users/';
 
 document.addEventListener('DOMContentLoaded', () => {
     getCurrentAuthUser();
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function getCurrentAuthUser() {
-    fetch(URL + 'currentAuth')
+    fetch('http://localhost:8080/api/user/')
         .then(response => response.json())
         .then(user => {
             let rolesString = user.roles.map(role => role.name.replace('ROLE_', '')).join(' ');
